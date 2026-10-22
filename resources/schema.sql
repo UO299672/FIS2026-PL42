@@ -1,7 +1,7 @@
 -- Primero se deben borrar todas las tablas (de detalle a maestro) y luego añadirlas (de maestro a detalle)
 drop table if exists HistorialInscripcion;
 drop table if exists Inscripcion;
-drop table if exists PeriodoInscripcion;
+drop table if exists Oferta;
 drop table if exists ActividadDia;
 drop table if exists Actividad;
 drop table if exists Persona;
@@ -36,18 +36,33 @@ CREATE TABLE Persona (
     CHECK ((tipo_persona = 'SOCIO' AND numero_socio IS NOT NULL)
         OR (tipo_persona = 'NO_SOCIO' AND numero_socio IS NULL))
 );
+
+-- Tabla para gestionar las ofertas anuales con sus periodos de inscripcion (iguales para todas sus actividades)
+CREATE TABLE Oferta (
+    id_oferta INTEGER PRIMARY KEY AUTOINCREMENT,
+    anio INTEGER NOT NULL UNIQUE,                      -- año de inicio de la temporada (2026 = 2026/27)
+    fecha_apertura_socios DATE NOT NULL,
+    fecha_cierre_socios DATE NOT NULL,
+    fecha_apertura_no_socios DATE NOT NULL,
+    fecha_cierre_no_socios DATE NOT NULL,
+    CHECK (fecha_apertura_socios <= fecha_cierre_socios),
+    CHECK (fecha_apertura_no_socios > fecha_apertura_socios),
+    CHECK (fecha_apertura_no_socios <= fecha_cierre_no_socios)
+);
  
 -- Tabla para gestionar las actividades de la oferta
 CREATE TABLE Actividad (
     id_actividad INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_oferta INTEGER NOT NULL,
     id_categoria INTEGER NOT NULL,
-    id_instalacion INTEGER,                            -- se asigna despues de crear la actividad (puede ser NULL)
+    id_instalacion INTEGER,
     nivel TEXT NOT NULL CHECK (nivel IN ('INICIACION', 'MEDIO', 'AVANZADO')),
-    hora_inicio TEXT NOT NULL,                         -- formato HH:MM
-    hora_fin TEXT NOT NULL,                            -- formato HH:MM
+    hora_inicio TEXT NOT NULL,
+    hora_fin TEXT NOT NULL,
     plazas_totales INTEGER NOT NULL CHECK (plazas_totales > 0),
     fecha_primera_sesion DATE NOT NULL,
     CHECK (hora_inicio < hora_fin),
+    FOREIGN KEY (id_oferta) REFERENCES Oferta(id_oferta),
     FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria),
     FOREIGN KEY (id_instalacion) REFERENCES Instalacion(id_instalacion)
 );
@@ -56,22 +71,11 @@ CREATE TABLE Actividad (
 CREATE TABLE ActividadDia (
     id_actividad_dia INTEGER PRIMARY KEY AUTOINCREMENT,
     id_actividad INTEGER NOT NULL,
-    dia_semana INTEGER NOT NULL CHECK (dia_semana BETWEEN 1 AND 7),   -- 1 = lunes ... 7 = domingo
+    dia_semana INTEGER NOT NULL CHECK (dia_semana BETWEEN 1 AND 7), 
     UNIQUE (id_actividad, dia_semana),
     FOREIGN KEY (id_actividad) REFERENCES Actividad(id_actividad)
 );
  
--- Tabla para los periodos de inscripcion de cada actividad (uno para socios y otro para no socios)
-CREATE TABLE PeriodoInscripcion (
-    id_periodo INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_actividad INTEGER NOT NULL,
-    tipo_persona TEXT NOT NULL CHECK (tipo_persona IN ('SOCIO', 'NO_SOCIO')),
-    fecha_apertura DATE NOT NULL,
-    fecha_cierre DATE NOT NULL,
-    UNIQUE (id_actividad, tipo_persona),
-    CHECK (fecha_apertura <= fecha_cierre),
-    FOREIGN KEY (id_actividad) REFERENCES Actividad(id_actividad)
-);
  
 -- Tabla para gestionar las inscripciones de las personas en las actividades
 CREATE TABLE Inscripcion (
