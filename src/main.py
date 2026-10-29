@@ -1,10 +1,5 @@
-from producto.productoView import productoView
-from listadeseos.listadeseosView import listadeseosView
-from coment_val.coment_valView import coment_valView
-from categorias.categoriasView import categoriasView
-from informes.informesView import informesView
 from util.database import DataBase
-from pedidos.pedidoView import PedidoView
+from activides.gestion_actividades import añadir_actividad  
 
 
 def initialize_database(db_name="CompanyDB.db", schema_path="resources/schema.sql", data_path="resources/data.sql"):
@@ -19,6 +14,14 @@ def main():
         print("Panel de funcionalidades:")
         
         choice = input("Seleccione una opción: ").strip()
+        print("1) Añadir actividad"
+              "0) Salir")
+
+        if choice == "1":
+            añadir_actividad()
+        elif choice == "0":
+            print("Saliendo del programa.")
+            break
         
 
 
