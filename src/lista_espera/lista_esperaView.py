@@ -12,7 +12,7 @@ class lista_esperaView:
         
     def display_lista_espera_menu(self):
         print("""Opciones de usuario: \n
-            1.- Ejemplo
+            1.- 
             2.- Salir
             """)
 
