@@ -41,8 +41,8 @@ CREATE TABLE Actividad (
     id_instalacion INTEGER,
     nivel TEXT,
     hora_inicio TIME NOT NULL,
-    hora_fin TIME NOT NULL,
-    dia_actividad INTEGER NOT NULL
+    hora_fin TIME NOT NULL,                                     -- formato HH:MM
+    dia_actividad INTEGER NOT NULL CHECK (dia_actividad BETWEEN 1 AND 7),  -- 1 = lunes ... 7 = domingo
     plazas INTEGER NOT NULL CHECK (plazas >= 0),
     FOREIGN KEY (id_oferta) REFERENCES Oferta(id_oferta),
     FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria),
@@ -53,7 +53,7 @@ CREATE TABLE Inscripcion (
     id_inscripcion INTEGER PRIMARY KEY NOT NULL,
     id_persona INTEGER NOT NULL,
     id_actividad INTEGER NOT NULL,
-    estado TEXT,
+    estado TEXT CHECK (estado IN ('confirmada', 'en espera', 'cancelada')),  -- 'confirmada' ocupa plaza
     fecha_solicitud DATETIME NOT NULL,
     FOREIGN KEY (id_actividad) REFERENCES Actividad(id_actividad),
     FOREIGN KEY (id_persona) REFERENCES Persona(id_persona)

@@ -41,3 +41,11 @@ def validate_date(value: str, allow_empty: bool = False, birth_date: bool = Fals
 def validate_date_range(start_date: str, end_date: str | None) -> None:
     if end_date is not None and end_date < start_date:
         raise ValidationError("La fecha de baja no puede ser anterior a la fecha de alta.")
+
+def validate_month(value: str) -> tuple[int, int]:
+    """Valida un mes con formato AAAA-MM y devuelve (año, mes)."""
+    try:
+        parsed = datetime.strptime(value.strip(), "%Y-%m")
+    except ValueError as error:
+        raise ValidationError("El mes debe tener el formato AAAA-MM (por ejemplo 2026-10).") from error
+    return parsed.year, parsed.month

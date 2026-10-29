@@ -2,12 +2,12 @@ import logging
 import sqlite3
 from contextlib import contextmanager
 
-from src.util.unexpectedException import UnexpectedException
+from util.unexpectedException import UnexpectedException
 
 logger = logging.getLogger(__name__)
 
 
-class Database:
+class DataBase:
     '''
     Encapsula la conexión a una base de datos, la ejecución de consultas y scripts para
     generar el esquema y carga inicial de datos.
