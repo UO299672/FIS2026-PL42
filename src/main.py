@@ -1,11 +1,4 @@
-from producto.productoView import productoView
-from listadeseos.listadeseosView import listadeseosView
-from coment_val.coment_valView import coment_valView
-from categorias.categoriasView import categoriasView
-from informes.informesView import informesView
 from util.database import DataBase
-from pedidos.pedidoView import PedidoView
-
 
 def initialize_database(db_name="CompanyDB.db", schema_path="resources/schema.sql", data_path="resources/data.sql"):
     db = DataBase(db_name)
