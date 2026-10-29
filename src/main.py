@@ -1,28 +1,28 @@
-from util.database import DataBase
-from activides.gestion_actividades import añadir_actividad  
+from src.util.database import Database
+from src.view.actividadView import add_actividad
 
 
 def initialize_database(db_name="CompanyDB.db", schema_path="resources/schema.sql", data_path="resources/data.sql"):
-    db = DataBase(db_name)
+    db = Database(db_name)
     db.executeScript(schema_path)  # Load schema
     db.executeScript(data_path)    # Load initial data
+    return db
 
 def main():
-    initialize_database()  # Initialize DB with schema and data on each run
-        
-    while True:    
-        print("Panel de funcionalidades:")
-        
-        choice = input("Seleccione una opción: ").strip()
-        print("1) Añadir actividad"
-              "0) Salir")
+    db = initialize_database()  # Initialize DB with schema and data on each run
 
+    while True:
+        print("Panel de funcionalidades:")
+        print("  1. Añadir actividad a la oferta actual")
+        print("  0. Salir")
+
+        choice = input("Seleccione una opción: ").strip()
         if choice == "1":
-            añadir_actividad()
+            add_actividad(db)
         elif choice == "0":
-            print("Saliendo del programa.")
             break
-        
+        else:
+            print("Opción no válida.")
 
 
 if __name__ == "__main__":

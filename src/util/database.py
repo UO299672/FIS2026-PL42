@@ -68,6 +68,7 @@ class Database:
             with self._connect() as (conn, curs):
                 curs.execute(query, args)
                 conn.commit()
+                return curs.lastrowid
         except sqlite3.DatabaseError as e:
             logger.error("Error actualizando la base de datos %s", self.db_path, exc_info=True)
             raise UnexpectedException(str(e)) from e
