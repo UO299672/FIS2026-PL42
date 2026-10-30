@@ -42,7 +42,7 @@ CREATE TABLE Actividad (
     nivel TEXT,
     hora_inicio TIME NOT NULL,
     hora_fin TIME NOT NULL,
-    dia_actividad INTEGER NOT NULL
+    dia_actividad INTEGER NOT NULL,
     plazas INTEGER NOT NULL CHECK (plazas >= 0),
     FOREIGN KEY (id_oferta) REFERENCES Oferta(id_oferta),
     FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria),

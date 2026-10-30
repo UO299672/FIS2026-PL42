@@ -2,7 +2,7 @@ import logging
 import sqlite3
 from contextlib import contextmanager
 
-from src.util.unexpectedException import UnexpectedException
+from util.unexpectedException import UnexpectedException
 
 logger = logging.getLogger(__name__)
 
