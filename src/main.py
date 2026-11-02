@@ -35,7 +35,10 @@ def main():
         print("          CENTRO DEPORTIVO                ")
         print("==========================================")
         print("1. Inscribirse en una actividad")
-        print("2. Salir")
+        print("2. Cancelar una inscripción")
+        print("3. Añadir una actividad")
+        print("4. Cancelar una inscripción")
+        print("3. Salir")
 
         choice = input("Seleccione una opción: ").strip()
 
@@ -46,6 +49,23 @@ def main():
             except Exception as e:
                 print(f"Error en el módulo de inscripción: {e}")
         elif choice == '2':
+            try:
+                vista_cancelacion = cancelacionView()
+                vista_cancelacion.ejecutar()
+            except Exception as e:
+                print(f"Error en el módulo de cancelación: {e}")
+        elif choice == '3':
+            try:
+                añadir_actividad()
+            except Exception as e:
+                print(f"Error al añadir la actividad: {e}")
+        elif choice == '4':
+            try:
+                vista_cancelacion = cancelacionView()
+                vista_cancelacion.ejecutar()
+            except Exception as e:
+                print(f"Error en el módulo de cancelación: {e}")
+        elif choice == '3':
             print("Saliendo del programa...\n")
             break
         else:
