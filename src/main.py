@@ -10,6 +10,7 @@ from util.database import Database
 from inscripcion.inscripcionView import inscripcionView
 from cancelacion.cancelacionView import cancelacionView
 from actividades.gestion_actividades import añadir_actividad
+from cancelacion.cancelacionView import cancelacionView
 
 ROOT_DIR = os.path.dirname(SRC_DIR)
 DB_PATH = os.path.join(ROOT_DIR, "CompanyDB.db")
@@ -34,9 +35,7 @@ def main():
         print("          CENTRO DEPORTIVO                ")
         print("==========================================")
         print("1. Inscribirse en una actividad")
-        print("2. Cancelar una inscripción")
-        print("3. Añadir una actividad")
-        print("4. Salir")
+        print("2. Salir")
 
         choice = input("Seleccione una opción: ").strip()
 
@@ -47,17 +46,6 @@ def main():
             except Exception as e:
                 print(f"Error en el módulo de inscripción: {e}")
         elif choice == '2':
-            try:
-                vista_cancelacion = cancelacionView()
-                vista_cancelacion.ejecutar()
-            except Exception as e:
-                print(f"Error en el módulo de cancelación: {e}")
-        elif choice == '3':
-            try:
-                añadir_actividad()
-            except Exception as e:
-                print(f"Error al añadir la actividad: {e}")
-        elif choice == '4':
             print("Saliendo del programa...\n")
             break
         else:
