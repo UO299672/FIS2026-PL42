@@ -48,6 +48,12 @@ class cancelacionView:
         ins_seleccionada = inscripciones[idx_sel - 1]
         id_inscripcion = ins_seleccionada['id_inscripcion']
 
+        # Validación del día 15 antes de pedir confirmación
+        cierre = ins_seleccionada['cierre_socios'] if persona['tipo'].lower() == 'socio' else ins_seleccionada['cierre_no_socios']
+        if not self.model.es_cancelable_por_fecha(cierre):
+            print("❌ No es posible cancelar la inscripción después del día 15 del último mes de la actividad.")
+            return
+
         confirmacion = input(f"¿Está seguro de que desea cancelar la inscripción a '{ins_seleccionada['actividad']}'? (s/n): ").strip().lower()
         if confirmacion != 's':
             print("Operación abortada.")
@@ -56,13 +62,16 @@ class cancelacionView:
         resultado = self.model.cancelar_inscripcion(id_inscripcion)
         if resultado.get("exito"):
             resumen = self.model.obtener_resumen_cancelacion(id_inscripcion)
+            
+            # --- JUSTIFICANTE CON FECHA Y HORA DE CANCELACIÓN ---
             print("\n==========================================")
             print("      JUSTIFICANTE DE CANCELACIÓN         ")
             print("==========================================")
-            print(f"ID Inscripción : {resumen['id_inscripcion']}")
-            print(f"Usuario        : {resumen['persona']} ({resumen['dni_nie']})")
-            print(f"Actividad      : {resumen['actividad']}")
-            print(f"Estado Final   : {resumen['estado'].upper()}")
+            print(f"ID Inscripción    : {resumen['id_inscripcion']}")
+            print(f"Usuario           : {resumen['persona']} ({resumen['dni_nie']})")
+            print(f"Actividad         : {resumen['actividad']}")
+            print(f"Estado Final      : {resumen['estado'].upper()}")
+            print(f"Fecha/Hora Canc.  : {resultado.get('fecha_cancelacion')}")  # <--- AQUÍ SE MUESTRA LA FECHA Y HORA
             print("==========================================")
             print("✅ La inscripción ha sido cancelada correctamente.")
             if resultado.get("promocionado"):

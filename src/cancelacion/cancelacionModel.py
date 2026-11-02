@@ -1,3 +1,4 @@
+from datetime import datetime
 from util.database import Database
 
 class cancelacionModel:
@@ -5,7 +6,6 @@ class cancelacionModel:
         self.db = Database(db_name)
 
     def buscar_persona_por_identificador(self, identificador: str):
-        """Busca a una persona por número de socio (si es numérico) o por DNI/NIE."""
         identificador = identificador.strip()
         if identificador.isdigit():
             query = "SELECT * FROM Persona WHERE numero_socio = ?"
@@ -16,7 +16,6 @@ class cancelacionModel:
         return res[0] if res else None
 
     def obtener_inscripciones_cancelables(self, id_persona: int):
-        """Devuelve las inscripciones activas ('confirmada' o 'en espera') del usuario."""
         query = """
             SELECT 
                 i.id_inscripcion, 
@@ -27,22 +26,33 @@ class cancelacionModel:
                 a.hora_fin, 
                 a.dia_actividad, 
                 i.estado, 
-                i.fecha_solicitud
+                i.fecha_solicitud,
+                o.cierre_socios,
+                o.cierre_no_socios
             FROM Inscripcion i
             JOIN Actividad a ON i.id_actividad = a.id_actividad
             JOIN Categoria c ON a.id_categoria = c.id_categoria
+            JOIN Oferta o ON a.id_oferta = o.id_oferta
             LEFT JOIN Instalacion inst ON a.id_instalacion = inst.id_instalacion
             WHERE i.id_persona = ? AND LOWER(i.estado) IN ('confirmada', 'en espera')
             ORDER BY i.fecha_solicitud DESC
         """
         return self.db.executeQuery(query, id_persona)
 
+    def es_cancelable_por_fecha(self, fecha_cierre_str: str) -> bool:
+        """
+        Verifica si la fecha actual es anterior al día 15 del último mes
+        del periodo de la oferta (fecha_cierre_str).
+        """
+        try:
+            fecha_cierre = datetime.strptime(fecha_cierre_str, "%Y-%m-%d")
+            # El día 15 del último mes de la actividad:
+            limite = datetime(fecha_cierre.year, fecha_cierre.month, 15)
+            return datetime.now() < limite
+        except Exception:
+            return True
+
     def cancelar_inscripcion(self, id_inscripcion: int):
-        """
-        Cambia el estado de la inscripción a 'cancelada'.
-        Si estaba 'confirmada', promociona automáticamente al primer usuario en 'en espera'.
-        """
-        # 1. Obtener estado e id_actividad de la inscripción a cancelar
         query_sel = "SELECT id_actividad, estado FROM Inscripcion WHERE id_inscripcion = ?"
         res_sel = self.db.executeQuery(query_sel, id_inscripcion)
         if not res_sel:
@@ -51,12 +61,10 @@ class cancelacionModel:
         id_actividad = res_sel[0]["id_actividad"]
         estado_anterior = res_sel[0]["estado"].lower()
 
-        # 2. Actualizar estado a 'cancelada'
         query_update = "UPDATE Inscripcion SET estado = 'cancelada' WHERE id_inscripcion = ?"
         self.db.executeUpdateQuery(query_update, id_inscripcion)
 
         promocionado = False
-        # 3. Si estaba confirmada, promocionar a la primera persona en lista de espera
         if estado_anterior == 'confirmada':
             query_espera = """
                 SELECT id_inscripcion 
@@ -72,10 +80,14 @@ class cancelacionModel:
                 self.db.executeUpdateQuery(query_promocionar, id_promovido)
                 promocionado = True
 
-        return {"exito": True, "promocionado": promocionado, "estado_anterior": estado_anterior}
+        return {
+            "exito": True, 
+            "promocionado": promocionado, 
+            "estado_anterior": estado_anterior,
+            "fecha_cancelacion": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
 
     def obtener_resumen_cancelacion(self, id_inscripcion: int):
-        """Devuelve los datos necesarios para generar el justificante de cancelación."""
         query = """
             SELECT 
                 i.id_inscripcion, 
@@ -87,8 +99,7 @@ class cancelacionModel:
                 inst.nombre AS instalacion, 
                 a.hora_inicio, 
                 a.hora_fin, 
-                i.estado, 
-                i.fecha_solicitud
+                i.estado
             FROM Inscripcion i
             JOIN Persona p ON i.id_persona = p.id_persona
             JOIN Actividad a ON i.id_actividad = a.id_actividad
