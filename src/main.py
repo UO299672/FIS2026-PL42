@@ -8,6 +8,8 @@ if SRC_DIR not in sys.path:
 
 from util.database import Database
 from inscripcion.inscripcionView import inscripcionView
+from cancelacion.cancelacionView import cancelacionView
+from actividades.gestion_actividades import añadir_actividad
 
 ROOT_DIR = os.path.dirname(SRC_DIR)
 DB_PATH = os.path.join(ROOT_DIR, "CompanyDB.db")
@@ -22,13 +24,44 @@ def initialize_database():
 
 
 def main():
-    initialize_database()  # Initialize DB with schema and data on each run
-        
-    while True:    
-        print("Panel de funcionalidades:")
-        
+    try:
+        initialize_database()
+    except Exception as e:
+        print(f"Error al inicializar la base de datos: {e}")
+
+    while True:
+        print("\n==========================================")
+        print("          CENTRO DEPORTIVO                ")
+        print("==========================================")
+        print("1. Inscribirse en una actividad")
+        print("2. Cancelar una inscripción")
+        print("3. Añadir una actividad")
+        print("4. Salir")
+
         choice = input("Seleccione una opción: ").strip()
-        
+
+        if choice == '1':
+            try:
+                vista = inscripcionView()
+                vista.run()
+            except Exception as e:
+                print(f"Error en el módulo de inscripción: {e}")
+        elif choice == '2':
+            try:
+                vista_cancelacion = cancelacionView()
+                vista_cancelacion.ejecutar()
+            except Exception as e:
+                print(f"Error en el módulo de cancelación: {e}")
+        elif choice == '3':
+            try:
+                añadir_actividad()
+            except Exception as e:
+                print(f"Error al añadir la actividad: {e}")
+        elif choice == '4':
+            print("Saliendo del programa...\n")
+            break
+        else:
+            print("Opción inválida. Inténtelo de nuevo.\n")
 
 
 if __name__ == "__main__":
