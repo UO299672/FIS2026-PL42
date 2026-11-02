@@ -4,7 +4,7 @@ from datetime import date
 
 from util.database import DataBase
 
-# Rango horario base que siempre se muestra (se amplía si hay actividades fuera de él)
+# Rango horario base que siempre se muestra
 HORA_APERTURA = 8
 HORA_CIERRE = 22
 
@@ -27,8 +27,6 @@ def _normalizar(texto: str) -> str:
 class calendarioModel:
     def __init__(self, db_name="CompanyDB.db"):
         self.db = DataBase(db_name)
-
-    # ---------- Acceso a datos ----------
 
     def listar_instalaciones(self):
         query = "SELECT id_instalacion, nombre FROM Instalacion ORDER BY id_instalacion"
@@ -72,7 +70,6 @@ class calendarioModel:
         """
         return self.db.executeQuery(query, ESTADO_OCUPA_PLAZA, id_instalacion, anio)
 
-    # ---------- Construcción del calendario (lógica pura, sin E/S) ----------
 
     @staticmethod
     def calcular_franjas(actividades):
@@ -89,10 +86,6 @@ class calendarioModel:
         """
         Construye el calendario del mes. Las actividades se repiten cada semana en su día
         (dia_actividad: 1 = lunes ... 7 = domingo).
-
-        Devuelve {'franjas': [(ini, fin), ...], 'semanas': [[dia, ...7], ...]} donde cada dia es
-        {'fecha': date, 'en_mes': bool, 'franjas': [[entrada, ...], ...]} y cada entrada
-        {'actividad': dict, 'primera': bool} (primera=True en la franja donde empieza la actividad).
         """
         franjas = calendarioModel.calcular_franjas(actividades)
         semanas = []
