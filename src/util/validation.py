@@ -49,6 +49,18 @@ def validate_time_range(start_time: str, end_time: str) -> None:
         raise ValidationError("La hora de fin debe ser posterior a la hora de inicio.")
 
 
+def validate_date_range(start_date: str, end_date: str | None) -> None:
+    if end_date is not None and end_date < start_date:
+        raise ValidationError("La fecha de baja no puede ser anterior a la fecha de alta.")
+
+def validate_month(value: str) -> tuple[int, int]:
+    """Valida un mes con formato AAAA-MM y devuelve (año, mes)."""
+    try:
+        parsed = datetime.strptime(value.strip(), "%Y-%m")
+    except ValueError as error:
+        raise ValidationError("El mes debe tener el formato AAAA-MM (por ejemplo 2026-10).") from error
+    return parsed.year, parsed.month
+
 def validate_places(value: str) -> int:
     try:
         places = int(value.strip())
