@@ -7,7 +7,7 @@ from util.unexpectedException import UnexpectedException
 logger = logging.getLogger(__name__)
 
 
-class DataBase:
+class Database:
     '''
     Encapsula la conexión a una base de datos, la ejecución de consultas y scripts para
     generar el esquema y carga inicial de datos.

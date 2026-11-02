@@ -1,5 +1,5 @@
-from src.util.database import Database
-from src.util.validation import validate_date, validate_time, validate_string
+from util.database import Database
+from util.validation import validate_date, validate_time, validate_string
 
 def formulario_actividad():
     nombre = input("Ingrese el nombre de la actividad: ")

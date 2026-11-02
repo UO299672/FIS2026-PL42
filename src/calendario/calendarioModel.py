@@ -2,7 +2,7 @@ import calendar
 import unicodedata
 from datetime import date
 
-from util.database import DataBase
+from util.database import Database
 
 # Rango horario base que siempre se muestra
 HORA_APERTURA = 8
@@ -26,7 +26,7 @@ def _normalizar(texto: str) -> str:
 
 class calendarioModel:
     def __init__(self, db_name="CompanyDB.db"):
-        self.db = DataBase(db_name)
+        self.db = Database(db_name)
 
     def listar_instalaciones(self):
         query = "SELECT id_instalacion, nombre FROM Instalacion ORDER BY id_instalacion"
