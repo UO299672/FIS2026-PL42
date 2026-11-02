@@ -16,7 +16,7 @@ INSERT INTO Instalacion (id_instalacion, nombre) VALUES
 (5, 'Gimnasio');   -- sin actividades: todo libre
 
 INSERT INTO Oferta (id_oferta, anio, apertura_socios, cierre_socios, apertura_no_socios, cierre_no_socios) VALUES
-(1, 2026, '2026-01-01', '2026-12-31', '2026-01-01', '2026-12-31'),
+(1, 2026, '2026-08-25', '2026-09-05', '2026-09-08', '2026-09-20'),
 (2, 2027, '2027-08-25', '2027-09-05', '2027-09-08', '2027-09-20');
 
 INSERT INTO Persona (id_persona, dni_nie, nombre, tipo, numero_socio) VALUES
