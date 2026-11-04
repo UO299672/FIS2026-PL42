@@ -7,10 +7,10 @@ if SRC_DIR not in sys.path:
     sys.path.insert(0, SRC_DIR)
 
 from util.database import Database
+from calendario.calendarioView import calendarioView
 from inscripcion.inscripcionView import inscripcionView
 from cancelacion.cancelacionView import cancelacionView
 from view.actividadView import add_actividad
-from cancelacion.cancelacionView import cancelacionView
 from periodos.periodosView import periodosView
 
 ROOT_DIR = os.path.dirname(SRC_DIR)
@@ -38,7 +38,7 @@ def main():
         print("1. Inscribirse en una actividad")
         print("2. Cancelar una inscripción")
         print("3. Añadir una actividad")
-        print("4. Cancelar una inscripción")
+        print("4. Calendario de instalaciones")
         print("5. Definir periodos de inscripción de una oferta")
         print("0. Salir")
 
@@ -46,14 +46,12 @@ def main():
 
         if choice == '1':
             try:
-                vista = inscripcionView()
-                vista.run()
+                inscripcionView().run()
             except Exception as e:
                 print(f"Error en el módulo de inscripción: {e}")
         elif choice == '2':
             try:
-                vista_cancelacion = cancelacionView()
-                vista_cancelacion.ejecutar()
+                cancelacionView().ejecutar()
             except Exception as e:
                 print(f"Error en el módulo de cancelación: {e}")
         elif choice == '3':
@@ -63,14 +61,12 @@ def main():
                 print(f"Error al añadir la actividad: {e}")
         elif choice == '4':
             try:
-                vista_cancelacion = cancelacionView()
-                vista_cancelacion.ejecutar()
+                calendarioView().run()
             except Exception as e:
-                print(f"Error en el módulo de cancelación: {e}")
+                print(f"Error al mostrar el calendario: {e}")
         elif choice == '5':
             try:
-                vista_periodos = periodosView()
-                vista_periodos.run()
+                periodosView().run()
             except Exception as e:
                 print(f"Error en el módulo de periodos de inscripción: {e}")
         elif choice == '0':
