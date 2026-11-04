@@ -9,8 +9,9 @@ if SRC_DIR not in sys.path:
 from util.database import Database
 from inscripcion.inscripcionView import inscripcionView
 from cancelacion.cancelacionView import cancelacionView
-from actividades.gestion_actividades import añadir_actividad
+from view.actividadView import add_actividad
 from cancelacion.cancelacionView import cancelacionView
+from periodos.periodosView import periodosView
 
 ROOT_DIR = os.path.dirname(SRC_DIR)
 DB_PATH = os.path.join(ROOT_DIR, "CompanyDB.db")
@@ -38,7 +39,8 @@ def main():
         print("2. Cancelar una inscripción")
         print("3. Añadir una actividad")
         print("4. Cancelar una inscripción")
-        print("3. Salir")
+        print("5. Definir periodos de inscripción de una oferta")
+        print("0. Salir")
 
         choice = input("Seleccione una opción: ").strip()
 
@@ -56,7 +58,7 @@ def main():
                 print(f"Error en el módulo de cancelación: {e}")
         elif choice == '3':
             try:
-                añadir_actividad()
+                add_actividad(Database(DB_PATH))
             except Exception as e:
                 print(f"Error al añadir la actividad: {e}")
         elif choice == '4':
@@ -65,7 +67,13 @@ def main():
                 vista_cancelacion.ejecutar()
             except Exception as e:
                 print(f"Error en el módulo de cancelación: {e}")
-        elif choice == '3':
+        elif choice == '5':
+            try:
+                vista_periodos = periodosView()
+                vista_periodos.run()
+            except Exception as e:
+                print(f"Error en el módulo de periodos de inscripción: {e}")
+        elif choice == '0':
             print("Saliendo del programa...\n")
             break
         else:

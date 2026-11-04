@@ -1,8 +1,8 @@
 import logging
 
-from src.util.actividadDAO import NIVELES, ActividadDAO
-from src.util.unexpectedException import UnexpectedException
-from src.util.validation import (DIAS_SEMANA, ValidationError, validate_days, validate_option,
+from util.actividadDAO import NIVELES, ActividadDAO
+from util.unexpectedException import UnexpectedException
+from util.validation import (DIAS_SEMANA, ValidationError, validate_days, validate_option,
                                  validate_places, validate_time, validate_time_range)
 
 logger = logging.getLogger(__name__)

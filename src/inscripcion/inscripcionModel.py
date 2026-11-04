@@ -25,6 +25,7 @@ class inscripcionModel:
     def listar_actividades_disponibles(self, tipo_persona: str):
         """
         Lista las actividades cuya oferta corresponda según las fechas del tipo de persona.
+        Las actividades sin instalación asignada no son visibles.
         """
         fecha_actual = datetime.now().strftime("%Y-%m-%d")
         
@@ -36,7 +37,7 @@ class inscripcionModel:
                        (SELECT COUNT(*) FROM Inscripcion WHERE id_actividad = a.id_actividad AND estado = 'confirmada') AS plazas_ocupadas
                 FROM Actividad a
                 JOIN Categoria c ON a.id_categoria = c.id_categoria
-                LEFT JOIN Instalacion inst ON a.id_instalacion = inst.id_instalacion
+                JOIN Instalacion inst ON a.id_instalacion = inst.id_instalacion
                 JOIN Oferta o ON a.id_oferta = o.id_oferta
                 WHERE ? BETWEEN o.apertura_socios AND o.cierre_socios
             """
@@ -48,7 +49,7 @@ class inscripcionModel:
                        (SELECT COUNT(*) FROM Inscripcion WHERE id_actividad = a.id_actividad AND estado = 'confirmada') AS plazas_ocupadas
                 FROM Actividad a
                 JOIN Categoria c ON a.id_categoria = c.id_categoria
-                LEFT JOIN Instalacion inst ON a.id_instalacion = inst.id_instalacion
+                JOIN Instalacion inst ON a.id_instalacion = inst.id_instalacion
                 JOIN Oferta o ON a.id_oferta = o.id_oferta
                 WHERE ? BETWEEN o.apertura_no_socios AND o.cierre_no_socios
             """
