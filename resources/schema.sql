@@ -20,10 +20,10 @@ CREATE TABLE Instalacion (
 CREATE TABLE Oferta (
     id_oferta INTEGER PRIMARY KEY NOT NULL,
     anio INTEGER NOT NULL UNIQUE,
-    apertura_socios DATE NOT NULL,
-    cierre_socios DATE NOT NULL,
-    apertura_no_socios DATE NOT NULL,
-    cierre_no_socios DATE NOT NULL
+    apertura_socios DATE,
+    cierre_socios DATE,
+    apertura_no_socios DATE,
+    cierre_no_socios DATE
 );
 
 CREATE TABLE Persona (

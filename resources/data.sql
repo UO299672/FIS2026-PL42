@@ -17,7 +17,8 @@ INSERT INTO Instalacion (id_instalacion, nombre) VALUES
 
 INSERT INTO Oferta (id_oferta, anio, apertura_socios, cierre_socios, apertura_no_socios, cierre_no_socios) VALUES
 (1, 2026, '2026-08-25', '2026-09-05', '2026-09-08', '2026-09-20'),
-(2, 2027, '2027-08-25', '2027-09-05', '2027-09-08', '2027-09-20');
+(2, 2027, '2027-08-25', '2027-09-05', '2027-09-08', '2027-09-20'),
+(3, 2028, NULL, NULL, NULL, NULL);   -- periodos de inscripción sin definir
 
 INSERT INTO Persona (id_persona, dni_nie, nombre, tipo, numero_socio) VALUES
 (1, '12345678A', 'Ana García',      'socio',    1001),
