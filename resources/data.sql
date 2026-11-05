@@ -44,7 +44,10 @@ INSERT INTO Actividad (id_actividad, id_oferta, id_categoria, id_instalacion, ni
 (9,  1, 4, 3, 'Inicial',    '09:00', '10:30', 6, 4),
 (10, 1, 4, 3, 'Avanzado',   '11:00', '12:30', 7, 4),
 (11, 1, 5, 4, NULL,         '19:00', '21:00', 2, 20),
-(12, 2, 1, 1, 'Inicial',    '09:00', '10:00', 1, 10);
+(12, 2, 1, 1, 'Inicial',    '09:00', '10:00', 1, 10),
+-- Sin instalación asignada (pruebas de asignación de instalaciones)
+(13, 1, 1, NULL, 'Inicial',  '09:00', '10:00', 1, 10),   -- misma categoría, nivel y horario que la 1: choca en Piscina
+(14, 1, 3, NULL, 'Avanzado', '09:30', '10:30', 1, 12);   -- solapa con la 13 si ambas van a la misma instalación
 
 -- Solo las inscripciones 'confirmada' ocupan plaza
 INSERT INTO Inscripcion (id_inscripcion, id_persona, id_actividad, estado, fecha_solicitud) VALUES
