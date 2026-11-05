@@ -6,7 +6,7 @@ import unittest
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 
-from util.database import DataBase
+from util.database import Database
 from calendario.calendarioModel import calendarioModel
 
 
@@ -14,7 +14,7 @@ class CalendarioModelTest(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
         self.tmp.close()
-        db = DataBase(self.tmp.name)
+        db = Database(self.tmp.name)
         db.executeScript(os.path.join(ROOT, "resources", "schema.sql"))
         db.executeScript(os.path.join(ROOT, "resources", "data.sql"))
         self.model = calendarioModel(self.tmp.name)

@@ -1,5 +1,6 @@
 from datetime import datetime
 from util.database import Database
+from lista_espera.lista_esperaModel import lista_esperaModel
 
 class cancelacionModel:
     def __init__(self, db_name="CompanyDB.db"):
@@ -66,19 +67,7 @@ class cancelacionModel:
 
         promocionado = False
         if estado_anterior == 'confirmada':
-            query_espera = """
-                SELECT id_inscripcion 
-                FROM Inscripcion 
-                WHERE id_actividad = ? AND LOWER(estado) = 'en espera' 
-                ORDER BY fecha_solicitud ASC, id_inscripcion ASC 
-                LIMIT 1
-            """
-            res_espera = self.db.executeQuery(query_espera, id_actividad)
-            if res_espera:
-                id_promovido = res_espera[0]["id_inscripcion"]
-                query_promocionar = "UPDATE Inscripcion SET estado = 'confirmada' WHERE id_inscripcion = ?"
-                self.db.executeUpdateQuery(query_promocionar, id_promovido)
-                promocionado = True
+            promocionado = lista_esperaModel(self.db.db_path).promocionar(id_actividad) is not None
 
         return {
             "exito": True, 

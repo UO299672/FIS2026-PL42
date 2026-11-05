@@ -136,7 +136,7 @@ class calendarioView:
             print(tabulate(filas, headers=cabeceras, tablefmt="grid", stralign="left"))
             print(f"Franjas ocupadas: {ocupadas} | Franjas libres: {libres}")
 
-        print("\nLeyenda: LIBRE = franja sin actividad | franja ocupada = #id de actividad, "
+        print("\nLIBRE = franja sin actividad | franja ocupada = #id de actividad, "
               "horario, categoría, nivel y plazas ocupadas/totales | (cont. #id) = la actividad continúa "
               "de la franja anterior | * = día fuera del mes\n")
 
