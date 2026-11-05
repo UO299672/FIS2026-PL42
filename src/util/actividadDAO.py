@@ -1,6 +1,6 @@
 from datetime import date
 
-NIVELES = ["Iniciación", "Medio", "Avanzado"]
+NIVELES = ["Inicial", "Intermedio", "Avanzado"]
 
 
 class ActividadDAO:
@@ -20,10 +20,11 @@ class ActividadDAO:
         return self.db.executeQuery("SELECT id_categoria, nombre FROM Categoria ORDER BY id_categoria")
 
     def insert_actividad(self, id_oferta, id_categoria, nivel, dias, hora_inicio, hora_fin, plazas):
-        return self.db.executeUpdateQuery(
+        '''Inserta una fila por cada día (1 = lunes ... 7 = domingo). Devuelve los ids creados.'''
+        return [self.db.executeUpdateQuery(
             "INSERT INTO Actividad (id_oferta, id_categoria, nivel, dia_actividad, hora_inicio, hora_fin, plazas) "
             "VALUES (?, ?, ?, ?, ?, ?, ?)",
-            id_oferta, id_categoria, nivel, dias, hora_inicio, hora_fin, plazas)
+            id_oferta, id_categoria, nivel, dia, hora_inicio, hora_fin, plazas) for dia in dias]
 
     def get_actividad(self, id_actividad):
         rows = self.db.executeQuery(

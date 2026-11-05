@@ -45,7 +45,8 @@ def add_actividad(db):
 
         print("Días de la semana:")
         show_options(DIAS_SEMANA)
-        dias = ask("Seleccione los días separados por comas (ej: 1,3,5): ", validate_days)
+        nombres_dias = ask("Seleccione los días separados por comas (ej: 1,3,5): ", validate_days)
+        dias = [DIAS_SEMANA.index(d) + 1 for d in nombres_dias.split(",")]
 
         while True:
             hora_inicio = ask("Hora de inicio (HH:MM): ", validate_time)
@@ -58,18 +59,18 @@ def add_actividad(db):
 
         plazas = ask("Número de plazas disponibles: ", validate_places)
 
-        id_actividad = dao.insert_actividad(oferta["id_oferta"], id_categoria, nivel, dias,
-                                            hora_inicio, hora_fin, plazas)
-        actividad = dao.get_actividad(id_actividad)
+        ids = dao.insert_actividad(oferta["id_oferta"], id_categoria, nivel, dias,
+                                   hora_inicio, hora_fin, plazas)
+        actividad = dao.get_actividad(ids[0])
     except UnexpectedException:
         print("Se ha producido un error inesperado al acceder a los datos.")
         return
 
     print("\nActividad registrada:")
-    print(f"  Id:         {actividad['id_actividad']}")
+    print(f"  Id:         {', '.join(str(i) for i in ids)}")
     print(f"  Oferta:     {actividad['anio']}")
     print(f"  Categoría:  {actividad['categoria']}")
     print(f"  Nivel:      {actividad['nivel']}")
-    print(f"  Días:       {actividad['dia_actividad'].replace(',', ', ')}")
+    print(f"  Días:       {nombres_dias.replace(',', ', ')}")
     print(f"  Horario:    {actividad['hora_inicio']} - {actividad['hora_fin']}")
     print(f"  Plazas:     {actividad['plazas']}\n")
