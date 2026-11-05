@@ -19,7 +19,7 @@ class ofertaView:
                 tipo_persona = persona['tipo']
                 print(f"Bienvenido/a, {persona['nombre']} (Tipo: {tipo_persona})")
             else:
-                print("⚠️ Identificador no encontrado. Se mostrarán las fechas generales.")
+                print("Identificador no encontrado. Se mostrarán las fechas generales.")
 
         # 2. Filtros obligatorios combinables
         print("\n--- FILTROS DE BÚSQUEDA ---")
@@ -44,21 +44,21 @@ class ofertaView:
 
         # Validación del filtro obligatorio
         if categoria_id is None and nivel is None and dia is None:
-            print("\n❌ Error: Es obligatorio seleccionar al menos un filtro para realizar la consulta.")
+            print("\nError: Es obligatorio seleccionar al menos un filtro para realizar la consulta.")
             return
 
         # 3. Búsqueda y renderizado
         actividades = self.model.buscar_actividades_filtradas(categoria_id, nivel, dia)
 
         if not actividades:
-            print("\nℹ️ No se han encontrado actividades que coincidan con los criterios seleccionados.")
+            print("\nNo se han encontrado actividades que coincidan con los criterios seleccionados.")
             return
 
         # Filtrar por defecto las abiertas HOY
         actividades_abiertas = [a for a in actividades if a['abierta_hoy']]
         
         if not actividades_abiertas:
-            print("\nℹ️ No hay actividades abiertas en la fecha actual para los filtros seleccionados.")
+            print("\nNo hay actividades abiertas en la fecha actual para los filtros seleccionados.")
             return
 
         # Preparar tabla para mostrar

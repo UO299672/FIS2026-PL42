@@ -65,6 +65,9 @@ class consultaModel:
     @staticmethod
     def estado_periodo(apertura: str, cierre: str, hoy: date = None) -> str:
         """'no abierto', 'abierto' o 'cerrado' según la fecha (formato AAAA-MM-DD)."""
+        """'no abierto', 'abierto', 'cerrado' o 'sin definir' (formato AAAA-MM-DD)."""
+        if not apertura or not cierre:
+            return "sin definir"
         hoy = (hoy or date.today()).isoformat()
         if hoy < apertura:
             return "no abierto"

@@ -72,7 +72,8 @@ class consultaView:
                 ("socios", act["apertura_socios"], act["cierre_socios"]),
                 ("no socios", act["apertura_no_socios"], act["cierre_no_socios"])):
             estado = self.model.estado_periodo(apertura, cierre)
-            print(f"Periodo de inscripción {etiqueta}: {apertura} a {cierre} -> {estado.upper()}")
+            fechas = f"{apertura} a {cierre} -> " if apertura and cierre else ""
+            print(f"Periodo de inscripción {etiqueta}: {fechas}{estado.upper()}")
 
         inscritos = self.model.obtener_inscritos(act["id_actividad"])
         if not inscritos:
