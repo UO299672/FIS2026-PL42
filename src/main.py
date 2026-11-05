@@ -12,6 +12,8 @@ from inscripcion.inscripcionView import inscripcionView
 from cancelacion.cancelacionView import cancelacionView
 from view.actividadView import add_actividad
 from periodos.periodosView import periodosView
+from oferta.ofertaView import ofertaView
+from consulta.consultaView import consultaView
 from asignacion.asignacionView import asignacionView
 
 ROOT_DIR = os.path.dirname(SRC_DIR)
@@ -41,7 +43,9 @@ def main():
         print("3. Añadir una actividad")
         print("4. Calendario de instalaciones")
         print("5. Definir periodos de inscripción de una oferta")
-        print("6. Asignar una instalación a una actividad")
+        print("6. Consultar la oferta de actividades")
+        print("7. Consultar actividades e inscripciones")
+        print("8. Asignar una instalación a una actividad")
         print("0. Salir")
 
         choice = input("Seleccione una opción: ").strip()
@@ -72,6 +76,16 @@ def main():
             except Exception as e:
                 print(f"Error en el módulo de periodos de inscripción: {e}")
         elif choice == '6':
+            try:
+                ofertaView().ejecutar()
+            except Exception as e:
+                print(f"Error en la consulta de oferta: {e}")
+        elif choice == '7':
+            try:
+                consultaView().run()
+            except Exception as e:
+                print(f"Error en el módulo de consulta: {e}")
+        elif choice == '8':
             try:
                 asignacionView().run()
             except Exception as e:

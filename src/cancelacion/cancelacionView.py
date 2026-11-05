@@ -11,19 +11,19 @@ class cancelacionView:
         
         identificador = input("Ingrese DNI/NIE o Número de socio: ").strip()
         if not identificador:
-            print("❌ Debe introducir un identificador válido.")
+            print("Debe introducir un identificador válido.")
             return
 
         persona = self.model.buscar_persona_por_identificador(identificador)
         if not persona:
-            print("❌ No se encontró ninguna persona con ese identificador.")
+            print("No se encontró ninguna persona con ese identificador.")
             return
 
         print(f"\nUsuario: {persona['nombre']} ({persona['tipo'].capitalize()})")
 
         inscripciones = self.model.obtener_inscripciones_cancelables(persona['id_persona'])
         if not inscripciones:
-            print("ℹ️ No tiene inscripciones activas ('confirmada' o 'en espera') para cancelar.")
+            print("ℹNo tiene inscripciones activas ('confirmada' o 'en espera') para cancelar.")
             return
 
         print("\nInscripciones activas disponibles para cancelar:")
@@ -37,7 +37,7 @@ class cancelacionView:
 
         opcion = input("\nSeleccione el número de la inscripción a cancelar (0 para salir): ").strip()
         if not opcion.isdigit() or int(opcion) < 0 or int(opcion) > len(inscripciones):
-            print("❌ Opción no válida.")
+            print("Opción no válida.")
             return
 
         idx_sel = int(opcion)
@@ -51,7 +51,7 @@ class cancelacionView:
         # Validación del día 15 antes de pedir confirmación
         cierre = ins_seleccionada['cierre_socios'] if persona['tipo'].lower() == 'socio' else ins_seleccionada['cierre_no_socios']
         if not self.model.es_cancelable_por_fecha(cierre):
-            print("❌ No es posible cancelar la inscripción después del día 15 del último mes de la actividad.")
+            print("No es posible cancelar la inscripción después del día 15 del último mes de la actividad.")
             return
 
         confirmacion = input(f"¿Está seguro de que desea cancelar la inscripción a '{ins_seleccionada['actividad']}'? (s/n): ").strip().lower()
@@ -73,8 +73,8 @@ class cancelacionView:
             print(f"Estado Final      : {resumen['estado'].upper()}")
             print(f"Fecha/Hora Canc.  : {resultado.get('fecha_cancelacion')}")  # <--- AQUÍ SE MUESTRA LA FECHA Y HORA
             print("==========================================")
-            print("✅ La inscripción ha sido cancelada correctamente.")
+            print("La inscripción ha sido cancelada correctamente.")
             if resultado.get("promocionado"):
                 print("ℹ️ Se ha promocionado automáticamente al primer usuario en lista de espera.")
         else:
-            print("❌ Ocurrió un error al intentar cancelar la inscripción.")
+            print("Ocurrió un error al intentar cancelar la inscripción.")

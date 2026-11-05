@@ -1,11 +1,13 @@
 from tabulate import tabulate
 from util.unexpectedException import UnexpectedException
+from lista_espera.lista_esperaModel import lista_esperaModel
 from .inscripcionModel import inscripcionModel
 
 
 class inscripcionView:
     def __init__(self, db_name="CompanyDB.db"):
         self.model = inscripcionModel(db_name)
+        self.lista_espera = lista_esperaModel(db_name)
 
     def run(self):
         try:
@@ -60,6 +62,10 @@ class inscripcionView:
             print(f" Ya cuenta con una inscripcion activa en esta actividad (Estado actual: {inscripcion_previa['estado']}).")
             return
 
+        if self.lista_espera.tiene_horario_coincidente(persona['id_persona'], id_actividad):
+            print(" Ya tiene otra inscripcion (confirmada o en lista de espera) con horario coincidente.")
+            return
+
         plazas_libres = self.model.calcular_plazas_libres(id_actividad)
         
         if plazas_libres > 0:
@@ -96,4 +102,6 @@ class inscripcionView:
         print(f" Horario        : {resumen['hora_inicio']} a {resumen['hora_fin']}")
         print(f" Estado         : {resumen['estado']}")
         print(f" Fecha/Hora     : {resumen['fecha_solicitud']}")
+        if resumen['estado'] == 'en espera':
+            print(f" Posicion lista : {self.lista_espera.posicion(id_inscripcion)}")
         print("==================================================\n")
