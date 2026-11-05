@@ -13,6 +13,7 @@ from cancelacion.cancelacionView import cancelacionView
 from view.actividadView import add_actividad
 from periodos.periodosView import periodosView
 from oferta.ofertaView import ofertaView
+from consulta.consultaView import consultaView
 
 ROOT_DIR = os.path.dirname(SRC_DIR)
 DB_PATH = os.path.join(ROOT_DIR, "CompanyDB.db")
@@ -42,7 +43,8 @@ def main():
         print("4. Calendario de instalaciones")
         print("5. Definir periodos de inscripción de una oferta")
         print("6. Consultar la oferta de actividades")
-        print("0. Salir")
+        print("7. Consultar actividades e inscripciones")
+        print("8. Salir")
 
         choice = input("Seleccione una opción: ").strip()
 
@@ -78,7 +80,12 @@ def main():
             except Exception as e:
                 print(f"Error en la consulta de oferta: {e}")
         
-        elif choice == '0':
+        elif choice == '7':
+            try:
+                consultaView().run()
+            except Exception as e:
+                print(f"Error en el módulo de consulta: {e}")
+        elif choice == '8':
             print("Saliendo del programa...\n")
             break
         else:
