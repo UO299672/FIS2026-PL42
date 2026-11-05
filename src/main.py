@@ -12,6 +12,7 @@ from inscripcion.inscripcionView import inscripcionView
 from cancelacion.cancelacionView import cancelacionView
 from actividades.gestion_actividades import añadir_actividad
 from cancelacion.cancelacionView import cancelacionView
+from consulta.consultaView import consultaView
 
 ROOT_DIR = os.path.dirname(SRC_DIR)
 DB_PATH = os.path.join(ROOT_DIR, "CompanyDB.db")
@@ -39,7 +40,8 @@ def main():
         print("2. Cancelar una inscripción")
         print("3. Añadir una actividad")
         print("4. Calendario de instalaciones")
-        print("5. Salir")
+        print("5. Consultar actividades e inscripciones")
+        print("6. Salir")
 
         choice = input("Seleccione una opción: ").strip()
 
@@ -64,6 +66,11 @@ def main():
             except Exception as e:
                 print(f"Error al mostrar el calendario: {e}")
         elif choice == '5':
+            try:
+                consultaView().run()
+            except Exception as e:
+                print(f"Error en el módulo de consulta: {e}")
+        elif choice == '6':
             print("Saliendo del programa...\n")
             break
         else:

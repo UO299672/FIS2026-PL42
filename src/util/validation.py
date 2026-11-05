@@ -70,3 +70,17 @@ def validate_places(value: str) -> int:
     if places <= 0:
         raise ValidationError("El número de plazas debe ser mayor que cero.")
     return places
+
+def validate_string(value: str) -> str:
+    """Valida que la cadena no esté vacía y no contenga solo espacios."""
+    if not value.strip():
+        raise ValidationError("El valor no puede estar vacío o contener solo espacios.")
+    return value.strip()
+
+def validate_date(value: str) -> str:
+    """Valida que la fecha tenga el formato YYYY-MM-DD y sea una fecha válida."""
+    try:
+        parsed = datetime.strptime(value.strip(), "%Y-%m-%d")
+    except ValueError as error:
+        raise ValidationError("La fecha debe tener el formato YYYY-MM-DD.") from error
+    return parsed.strftime("%Y-%m-%d")
