@@ -22,38 +22,50 @@ class inscripcionModel:
         res = self.db.executeQuery(query, identificador)
         return res[0] if res else None
 
-    def listar_actividades_disponibles(self, tipo_persona: str):
+    def obtener_categorias(self):
         """
-        Lista las actividades cuya oferta corresponda según las fechas del tipo de persona.
-        Las actividades sin instalación asignada no son visibles.
+        Obtiene las categorías disponibles para el menú de filtros.
+        """
+        query = "SELECT id_categoria, nombre FROM Categoria"
+        return self.db.executeQuery(query)
+
+    def listar_actividades_disponibles(self, tipo_persona: str, id_categoria=None, nivel=None, dia=None):
+        """
+        Lista las actividades cuya oferta corresponda según las fechas del tipo de persona,
+        aplicando los filtros seleccionados por el usuario.
         """
         fecha_actual = datetime.now().strftime("%Y-%m-%d")
         
+        base_query = """
+            SELECT a.id_actividad, c.nombre AS categoria, a.nivel,
+                   a.hora_inicio, a.hora_fin, a.dia_actividad, inst.nombre AS instalacion,
+                   a.plazas,
+                   (SELECT COUNT(*) FROM Inscripcion WHERE id_actividad = a.id_actividad AND estado = 'confirmada') AS plazas_ocupadas
+            FROM Actividad a
+            JOIN Categoria c ON a.id_categoria = c.id_categoria
+            JOIN Instalacion inst ON a.id_instalacion = inst.id_instalacion
+            JOIN Oferta o ON a.id_oferta = o.id_oferta
+        """
+        
         if tipo_persona.lower() == 'socio':
-            query = """
-                SELECT a.id_actividad, c.nombre AS categoria, a.nivel,
-                       a.hora_inicio, a.hora_fin, a.dia_actividad, inst.nombre AS instalacion,
-                       a.plazas,
-                       (SELECT COUNT(*) FROM Inscripcion WHERE id_actividad = a.id_actividad AND estado = 'confirmada') AS plazas_ocupadas
-                FROM Actividad a
-                JOIN Categoria c ON a.id_categoria = c.id_categoria
-                JOIN Instalacion inst ON a.id_instalacion = inst.id_instalacion
-                JOIN Oferta o ON a.id_oferta = o.id_oferta
-                WHERE ? BETWEEN o.apertura_socios AND o.cierre_socios
-            """
+            query = base_query + " WHERE ? BETWEEN o.apertura_socios AND o.cierre_socios"
         else:
-            query = """
-                SELECT a.id_actividad, c.nombre AS categoria, a.nivel,
-                       a.hora_inicio, a.hora_fin, a.dia_actividad, inst.nombre AS instalacion,
-                       a.plazas,
-                       (SELECT COUNT(*) FROM Inscripcion WHERE id_actividad = a.id_actividad AND estado = 'confirmada') AS plazas_ocupadas
-                FROM Actividad a
-                JOIN Categoria c ON a.id_categoria = c.id_categoria
-                JOIN Instalacion inst ON a.id_instalacion = inst.id_instalacion
-                JOIN Oferta o ON a.id_oferta = o.id_oferta
-                WHERE ? BETWEEN o.apertura_no_socios AND o.cierre_no_socios
-            """
-        return self.db.executeQuery(query, fecha_actual)
+            query = base_query + " WHERE ? BETWEEN o.apertura_no_socios AND o.cierre_no_socios"
+
+        params = [fecha_actual]
+
+        # Aplicar filtros combinables
+        if id_categoria:
+            query += " AND a.id_categoria = ?"
+            params.append(id_categoria)
+        if nivel:
+            query += " AND UPPER(a.nivel) = UPPER(?)"
+            params.append(nivel)
+        if dia:
+            query += " AND a.dia_actividad = ?"
+            params.append(dia)
+
+        return self.db.executeQuery(query, *params)
 
     def obtener_inscripcion_activa(self, id_persona: int, id_actividad: int):
         """

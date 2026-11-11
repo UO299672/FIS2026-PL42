@@ -33,9 +33,33 @@ class inscripcionView:
 
         print(f"\nBienvenido/a, {persona['nombre']} (Tipo: {persona['tipo']})")
 
-        actividades = self.model.listar_actividades_disponibles(persona['tipo'])
+        # --- INICIO FILTROS OBLIGATORIOS ---
+        print("\n--- FILTROS DE BÚSQUEDA ---")
+        print("Debe aplicar obligatoriamente al menos un filtro.")
+        
+        categorias = self.model.obtener_categorias()
+        print("\nCategorías disponibles:")
+        for c in categorias:
+            print(f"[{c['id_categoria']}] {c['nombre']}")
+            
+        cat_input = input("Seleccione ID de Categoría (intro para omitir): ").strip()
+        id_categoria = int(cat_input) if cat_input.isdigit() else None
+
+        nivel = input("Seleccione Nivel (ej. Inicial, Intermedio, Avanzado - intro para omitir): ").strip()
+        if not nivel:
+            nivel = None
+
+        dia_input = input("Seleccione Día de la semana (1=Lunes ... 7=Domingo - intro para omitir): ").strip()
+        dia = int(dia_input) if dia_input.isdigit() else None
+
+        if id_categoria is None and nivel is None and dia is None:
+            print("❌ Error: Es obligatorio seleccionar al menos un filtro para buscar actividades.")
+            return
+        # --- FIN FILTROS OBLIGATORIOS ---
+
+        actividades = self.model.listar_actividades_disponibles(persona['tipo'], id_categoria, nivel, dia)
         if not actividades:
-            print(" Actualmente no hay ninguna actividad con periodo de inscripcion abierto para su tipo de usuario.")
+            print(" Actualmente no hay ninguna actividad que coincida con sus filtros y tenga el periodo de inscripcion abierto.")
             return
 
         print("\nActividades disponibles:")
