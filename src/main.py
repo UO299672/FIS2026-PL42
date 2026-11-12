@@ -15,6 +15,7 @@ from periodos.periodosView import periodosView
 from oferta.ofertaView import ofertaView
 from consulta.consultaView import consultaView
 from asignacion.asignacionView import asignacionView
+from demanda.demandaView import demandaView
 
 ROOT_DIR = os.path.dirname(SRC_DIR)
 DB_PATH = os.path.join(ROOT_DIR, "CompanyDB.db")
@@ -46,6 +47,7 @@ def main():
         print("6. Consultar la oferta de actividades")
         print("7. Consultar actividades e inscripciones")
         print("8. Asignar una instalación a una actividad")
+        print("9. Consultar la demanda por día y franja horaria")
         print("0. Salir")
 
         choice = input("Seleccione una opción: ").strip()
@@ -90,6 +92,11 @@ def main():
                 asignacionView().run()
             except Exception as e:
                 print(f"Error en el módulo de asignación de instalaciones: {e}")
+        elif choice == '9':
+            try:
+                demandaView().run()
+            except Exception as e:
+                print(f"Error en la consulta de demanda: {e}")
         elif choice == '0':
             print("Saliendo del programa...\n")
             break
