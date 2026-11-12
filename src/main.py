@@ -16,6 +16,7 @@ from oferta.ofertaView import ofertaView
 from consulta.consultaView import consultaView
 from asignacion.asignacionView import asignacionView
 from demanda.demandaView import demandaView
+from importacion.importacionView import importacionView
 
 ROOT_DIR = os.path.dirname(SRC_DIR)
 DB_PATH = os.path.join(ROOT_DIR, "CompanyDB.db")
@@ -48,6 +49,7 @@ def main():
         print("7. Consultar actividades e inscripciones")
         print("8. Asignar una instalación a una actividad")
         print("9. Consultar la demanda por día y franja horaria")
+        print("10. Validar un fichero CSV de inscripciones")
         print("0. Salir")
 
         choice = input("Seleccione una opción: ").strip()
@@ -97,6 +99,11 @@ def main():
                 demandaView().run()
             except Exception as e:
                 print(f"Error en la consulta de demanda: {e}")
+        elif choice == '10':
+            try:
+                importacionView().run()
+            except Exception as e:
+                print(f"Error en la validación del fichero CSV: {e}")
         elif choice == '0':
             print("Saliendo del programa...\n")
             break
