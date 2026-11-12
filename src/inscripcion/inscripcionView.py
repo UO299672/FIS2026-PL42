@@ -17,7 +17,7 @@ class inscripcionView:
 
     def inscribir_usuario(self):
         print("\n==========================================")
-        print("   PROCESO DE INSCRIPCION A ACTIVIDAD (HU-06)")
+        print("   PROCESO DE INSCRIPCION A ACTIVIDAD   ")
         print("==========================================")
         
         identificador = input("Introduzca DNI/NIE o numero de socio ('c' para cancelar): ").strip()
