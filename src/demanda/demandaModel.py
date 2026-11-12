@@ -2,7 +2,7 @@ from util.database import Database
 from util.validation import DIAS_SEMANA
 from calendario.calendarioModel import hora_a_minutos
 
-# Estados de inscripción que cuentan como demanda (confirmadas + lista de espera)
+# Estados de inscripción que cuentan como demanda
 ESTADOS_DEMANDA = ("confirmada", "en espera")
 # Duración de cada franja horaria en minutos
 FRANJA_MINUTOS = 60
