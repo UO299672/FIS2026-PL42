@@ -218,3 +218,6 @@ __marimo__/
 .streamlit/secrets.toml
 # Base de datos local (se genera en cada arranque)
 CompanyDB.db
+
+# Ficheros generados por la aplicación (remesas, etc.)
+outputs/

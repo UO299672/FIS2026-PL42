@@ -20,34 +20,35 @@ INSERT INTO Oferta (id_oferta, anio, apertura_socios, cierre_socios, apertura_no
 (2, 2027, '2027-08-25', '2027-09-05', '2027-09-08', '2027-09-20'),
 (3, 2028, NULL, NULL, NULL, NULL);   -- periodos de inscripción sin definir
 
-INSERT INTO Persona (id_persona, dni_nie, nombre, tipo, numero_socio) VALUES
-(1, '12345678A', 'Ana García',      'socio',    1001),
-(2, '23456789B', 'Luis Pérez',      'socio',    1002),
-(3, '34567890C', 'Marta Díaz',      'socio',    1003),
-(4, '45678901D', 'Pablo Ruiz',      'socio',    1004),
-(5, '56789012E', 'Lucía Gómez',     'socio',    1005),
-(6, '67890123F', 'Carlos Vega',     'no socio', NULL),
-(7, '78901234G', 'Elena Mora',      'no socio', NULL),
-(8, '89012345H', 'Jorge Ramos',     'no socio', NULL),
-(9, 'X1234567L', 'Sofía Müller',    'no socio', NULL);
+INSERT INTO Persona (id_persona, dni_nie, nombre, tipo, numero_socio, cuenta_bancaria) VALUES
+(1, '12345678A', 'Ana García',      'socio',    1001, 'ES9121000418450200051332'),
+(2, '23456789B', 'Luis Pérez',      'socio',    1002, 'ES7921000813610123456789'),
+(3, '34567890C', 'Marta Díaz',      'socio',    1003, 'ES6000491500051234567892'),
+(4, '45678901D', 'Pablo Ruiz',      'socio',    1004, 'ES1720852066623456789011'),
+(5, '56789012E', 'Lucía Gómez',     'socio',    1005, 'ES4801822370420201234567'),
+(6, '67890123F', 'Carlos Vega',     'no socio', NULL, 'ES2914650100722030876293'),
+(7, '78901234G', 'Elena Mora',      'no socio', NULL, 'ES0700120345030000067890'),
+(8, '89012345H', 'Jorge Ramos',     'no socio', NULL, 'ES5520385778983000760236'),
+(9, 'X1234567L', 'Sofía Müller',    'no socio', NULL, 'ES3600750080390600013654');
 
 -- dia_actividad: 1 = lunes ... 7 = domingo
-INSERT INTO Actividad (id_actividad, id_oferta, id_categoria, id_instalacion, nivel, hora_inicio, hora_fin, dia_actividad, plazas) VALUES
-(1,  1, 1, 1, 'Inicial',    '09:00', '10:00', 1, 3),
-(2,  1, 1, 1, 'Avanzado',   '18:00', '19:30', 1, 20),
-(3,  1, 1, 1, 'Intermedio', '10:00', '11:00', 3, 10),
-(4,  1, 1, 1, 'Inicial',    '17:00', '18:00', 5, 8),
-(5,  1, 2, 2, 'Inicial',    '09:30', '11:00', 2, 15),
-(6,  1, 3, 2, 'Intermedio', '18:00', '19:00', 4, 12),
-(7,  1, 2, 2, 'Avanzado',   '10:00', '12:00', 6, 10),
-(8,  1, 6, 2, NULL,         '19:00', '20:00', 1, 20),
-(9,  1, 4, 3, 'Inicial',    '09:00', '10:30', 6, 4),
-(10, 1, 4, 3, 'Avanzado',   '11:00', '12:30', 7, 4),
-(11, 1, 5, 4, NULL,         '19:00', '21:00', 2, 20),
-(12, 2, 1, 1, 'Inicial',    '09:00', '10:00', 1, 10),
+-- fecha_inicio/fecha_fin: periodo en que se imparte; precio_socio/precio_no_socio: cuota mensual
+INSERT INTO Actividad (id_actividad, id_oferta, id_categoria, id_instalacion, nivel, hora_inicio, hora_fin, dia_actividad, plazas, fecha_inicio, fecha_fin, precio_socio, precio_no_socio) VALUES
+(1,  1, 1, 1, 'Inicial',    '09:00', '10:00', 1, 3, '2026-10-01', '2027-06-30', 20.00, 30.00),
+(2,  1, 1, 1, 'Avanzado',   '18:00', '19:30', 1, 20, '2026-10-01', '2027-06-30', 20.00, 30.00),
+(3,  1, 1, 1, 'Intermedio', '10:00', '11:00', 3, 10, '2026-10-01', '2027-06-30', 20.00, 30.00),
+(4,  1, 1, 1, 'Inicial',    '17:00', '18:00', 5, 8, '2026-10-01', '2026-10-31', 20.00, 30.00),
+(5,  1, 2, 2, 'Inicial',    '09:30', '11:00', 2, 15, '2026-10-01', '2027-06-30', 15.00, 25.00),
+(6,  1, 3, 2, 'Intermedio', '18:00', '19:00', 4, 12, '2026-10-01', '2027-06-30', 15.00, 25.00),
+(7,  1, 2, 2, 'Avanzado',   '10:00', '12:00', 6, 10, '2026-10-01', '2027-06-30', 15.00, 25.00),
+(8,  1, 6, 2, NULL,         '19:00', '20:00', 1, 20, '2026-10-01', '2027-06-30', 18.00, 28.00),
+(9,  1, 4, 3, 'Inicial',    '09:00', '10:30', 6, 4, '2026-10-01', '2027-06-30', 25.00, 40.00),
+(10, 1, 4, 3, 'Avanzado',   '11:00', '12:30', 7, 4, '2026-10-01', '2027-06-30', 25.00, 40.00),
+(11, 1, 5, 4, NULL,         '19:00', '21:00', 2, 20, '2026-10-01', '2027-06-30', 12.00, 20.00),
+(12, 2, 1, 1, 'Inicial',    '09:00', '10:00', 1, 10, '2027-10-01', '2028-06-30', 20.00, 30.00),
 -- Sin instalación asignada (pruebas de asignación de instalaciones)
-(13, 1, 1, NULL, 'Inicial',  '09:00', '10:00', 1, 10),   -- misma categoría, nivel y horario que la 1: choca en Piscina
-(14, 1, 3, NULL, 'Avanzado', '09:30', '10:30', 1, 12);   -- solapa con la 13 si ambas van a la misma instalación
+(13, 1, 1, NULL, 'Inicial',  '09:00', '10:00', 1, 10, '2026-10-01', '2027-06-30', 20.00, 30.00),   -- misma categoría, nivel y horario que la 1: choca en Piscina
+(14, 1, 3, NULL, 'Avanzado', '09:30', '10:30', 1, 12, '2026-10-01', '2027-06-30', 15.00, 25.00);   -- solapa con la 13 si ambas van a la misma instalación
 
 -- Solo las inscripciones 'confirmada' ocupan plaza
 INSERT INTO Inscripcion (id_inscripcion, id_persona, id_actividad, estado, fecha_solicitud) VALUES
