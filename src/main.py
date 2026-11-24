@@ -15,6 +15,7 @@ from periodos.periodosView import periodosView
 from oferta.ofertaView import ofertaView
 from consulta.consultaView import consultaView
 from asignacion.asignacionView import asignacionView
+from remesa.remesaView import remesaView
 from demanda.demandaView import demandaView
 
 ROOT_DIR = os.path.dirname(SRC_DIR)
@@ -47,7 +48,8 @@ def main():
         print("6. Consultar la oferta de actividades")
         print("7. Consultar actividades e inscripciones")
         print("8. Asignar una instalación a una actividad")
-        print("9. Comparar demanda de actividades con plazas ofertadas")
+        print("9. Emitir la remesa mensual de recibos")
+        print("10. Comparar demanda de actividades con plazas ofertadas")
         print("0. Salir")
 
         choice = input("Seleccione una opción: ").strip()
@@ -93,6 +95,11 @@ def main():
             except Exception as e:
                 print(f"Error en el módulo de asignación de instalaciones: {e}")
         elif choice == '9':
+            try:
+                remesaView().run()
+            except Exception as e:
+                print(f"Error en el módulo de remesas: {e}")
+        elif choice == '10':
             try:
                 demandaView().run()
             except Exception as e:
